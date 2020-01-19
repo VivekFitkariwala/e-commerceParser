@@ -1,0 +1,32 @@
+{
+  "data": {
+    "amazon": {
+      "brand": [
+        {
+          "name": "Sennheiser",
+          "products": [
+            {
+              "url": "https://www.amazon.in/Sennheiser-PXC550-Wireless-Headphones-Black/dp/B01E3XLNA0?ref_=ast_sto_dp"
+            },
+            {
+              "url": "https://www.amazon.in/Sennheiser-HD-4-40-BT-Bluetooth-Headphones/dp/B01MSZSJE9?ref_=ast_sto_dp&th=1&psc=1"
+            }
+          ]
+        }
+      ],
+      "category": [
+        {
+          "name": "Mobiles",
+          "products": [
+            {
+              "url": "https://www.amazon.in/Redmi-Note-Pro-Storage-Processor/dp/B07X1KT6LW/ref=gbph_img_m-2_5368_8fc96f59?smid=A23AODI1X2CEAE&pf_rd_p=93a6c061-706f-45ac-9420-5f4881595368&pf_rd_s=merchandised-search-2&pf_rd_t=101&pf_rd_i=1389401031&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_r=T05XHQPJ621CSEREEJCC"
+            },
+            {
+              "url": "https://www.amazon.in/Redmi-Note-Space-Black-Storage/dp/B07X4PXKZ7/ref=gbph_img_m-2_5368_a4335577?smid=A23AODI1X2CEAE&pf_rd_p=93a6c061-706f-45ac-9420-5f4881595368&pf_rd_s=merchandised-search-2&pf_rd_t=101&pf_rd_i=1389401031&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_r=T05XHQPJ621CSEREEJCC"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

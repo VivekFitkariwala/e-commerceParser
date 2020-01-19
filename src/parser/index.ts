@@ -1,14 +1,10 @@
-import FlipkartBrand from "./flipkart/brand";
-import FlipkartCategory from "./flipkart/category";
-
 class FactoryParser {
-  constructor(website: string, type: string, html: string) {
-    switch (website) {
-      case "flipkart":
-        return type === "brand"
-          ? new FlipkartBrand(html)
-          : new FlipkartCategory(html);
-    }
+  public parse(website: string, type: string, html: string) {
+    const Brand = require(`./${website}/brand`).default;
+    const Category = require(`./${website}/brand`).default;
+    return type === "brand"
+      ? new Brand().parse(html)
+      : new Category().parse(html);
   }
 }
 

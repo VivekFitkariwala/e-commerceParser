@@ -1,17 +1,20 @@
 import * as mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-// name: productName,
-//       brand,
-//       imageUrl: imageURL,
-//       price,
-//       mrp: mrpPrice,
-//       quantity,
-//       moq,
-//       discount,
-//       categoryPath
+export interface IProduct {
+  name: string;
+  imageUrl: string;
+  productUrl: string;
+  brand: string;
+  mrp: number;
+  price: number;
+  quantity: number;
+  moq: number;
+  discount: number;
+  categoryPath: string;
+}
 
-const ProductSchema = Schema(
+const ProductSchema = new Schema(
   {
     name: {
       type: String,
@@ -22,11 +25,17 @@ const ProductSchema = Schema(
       type: String,
       trim: true
     },
+    imageUrl: {
+      type: String
+    },
     brand: {
       type: String,
       trim: true
     },
     mrp: {
+      type: Number
+    },
+    price: {
       type: Number
     },
     quantity: {
@@ -48,4 +57,6 @@ const ProductSchema = Schema(
   }
 );
 
-export default mongoose.model("Product", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
+
+export default Product;
