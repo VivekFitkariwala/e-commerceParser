@@ -1,5 +1,6 @@
 import * as mongoose from "mongoose";
 const Schema = mongoose.Schema;
+const Types = Schema.Types;
 
 export interface IProduct {
   name: string;
@@ -17,38 +18,40 @@ export interface IProduct {
 const ProductSchema = new Schema(
   {
     name: {
-      type: String,
+      type: Types.String,
+      unique: true,
+      index: true,
       required: true,
       trim: true
     },
     productUrl: {
-      type: String,
+      type: Types.String,
       trim: true
     },
     imageUrl: {
-      type: String
+      type: Types.String
     },
     brand: {
-      type: String,
+      type: Types.String,
       trim: true
     },
     mrp: {
-      type: Number
+      type: Types.Number
     },
     price: {
-      type: Number
+      type: Types.Number
     },
     quantity: {
-      type: Number
+      type: Types.Number
     },
     moq: {
-      type: Number
+      type: Types.Number
     },
     discount: {
-      type: Number
+      type: Types.Number
     },
     categoryPath: {
-      type: String
+      type: Types.String
     }
   },
   {

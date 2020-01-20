@@ -1,0 +1,13 @@
+.blockContainer {
+  display: flex !important;
+  align-items: baseline;
+  margin: 10px 0px;
+}
+
+.label {
+  padding: 0px 10px;
+}
+
+.select {
+  width: 100px;
+}
