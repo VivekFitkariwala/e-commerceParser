@@ -1,5 +1,7 @@
+import * as Bluebird from "bluebird";
+import { fork } from "child_process";
 import { Request, Response } from "express";
-import * as puppeteer from "puppeteer";
+import * as os from "os";
 import * as dataJson from "../../data/data.json";
 import FactoryParser from "../../parser/index";
 import Product, { IProduct } from "./products.model";
@@ -9,24 +11,32 @@ export default class ParserController {
     const { website, type, item } = req.body;
     const data = dataJson.data[website][type][item];
     // TODO convert to lambda function here
-    const promiseArray = data.map(async ({ url }) => {
-      // shift this code in serverless function
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await page.goto(url, { waitUntil: "load", timeout: 0 });
-      const bodyHTML = await page.evaluate(() => document.body.innerHTML);
-      await browser.close();
+    const promiseArray = Bluebird.map(
+      data,
+      ({ url }) => {
+        const promise = new Bluebird(resolve => {
+          const process = fork("src/fork.js");
+          // send list of e-mails to forked process
+          process.send({ url });
+          console.log("Url", url);
+          // listen for messages from forked process
+          process.on("message", async ({ text }) => {
+            const productData = new FactoryParser().parse(website, type, text);
+            const update: IProduct = { ...productData, productUrl: url };
+            const filter = { name: update.name };
+            const document = await Product.findOneAndUpdate(filter, update, {
+              new: true,
+              upsert: true
+            });
+            return resolve(document);
+          });
+        });
+        return promise;
+      },
+      { concurrency: os.cpus().length }
+    );
 
-      const productData = new FactoryParser().parse(website, type, bodyHTML);
-      const update: IProduct = { ...productData, productUrl: url };
-      const filter = { name: update.name };
-      return Product.findOneAndUpdate(filter, update, {
-        new: true,
-        upsert: true
-      });
-    });
-
-    const productDetails: IProduct[] = await Promise.all(promiseArray);
+    const productDetails: any = await Bluebird.all(promiseArray);
     res.json(productDetails);
   };
 }
