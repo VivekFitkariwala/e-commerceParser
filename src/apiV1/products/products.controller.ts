@@ -9,7 +9,7 @@ import Product, { IProduct } from "./products.model";
 export default class ParserController {
   public parse = async (req: Request, res: Response): Promise<any> => {
     const { website, type, item } = req.body;
-    const data = dataJson.data[website][type][item];
+    const data = dataJson.data[website][type.toLowerCase()][item];
     // TODO convert to lambda function here
     const promiseArray = Bluebird.map(
       data,
@@ -22,6 +22,7 @@ export default class ParserController {
           // listen for messages from forked process
           process.on("message", async ({ text }) => {
             const productData = new FactoryParser().parse(website, type, text);
+            console.log("productData", productData);
             const update: IProduct = { ...productData, productUrl: url };
             const filter = { name: update.name };
             const document = await Product.findOneAndUpdate(filter, update, {
@@ -38,5 +39,15 @@ export default class ParserController {
 
     const productDetails: any = await Bluebird.all(promiseArray);
     res.json(productDetails);
+  };
+
+  public getAll = async (req: Request, res: Response): Promise<any> => {
+    const data = await Product.find();
+    res.json(data);
+  };
+
+  public deleteAll = async (req: Request, res: Response): Promise<any> => {
+    await Product.deleteMany({});
+    res.json({});
   };
 }

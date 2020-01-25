@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Label, FormGroup, Form, Button } from "reactstrap";
+import { Input, Label, FormGroup, Form, Button, Table } from "reactstrap";
 import * as data from "./data/data.json";
 import "./App.css";
 
@@ -10,6 +10,7 @@ const App: React.FC = () => {
   const [itemsState, setItemState] = useState();
   const initialList: string[] = [];
   const [itemListState, setItemListState] = useState(initialList);
+  const [productList, setProductList] = useState([]);
 
   const changeWebsite = (element: React.ChangeEvent<HTMLInputElement>) => {
     setWebsiteState(element.target.value);
@@ -21,6 +22,22 @@ const App: React.FC = () => {
     setItemState(element.target.value);
   };
 
+  const updatedProductList = async () => {
+    const url = window.location.origin;
+    // const url = "http://localhost:3000";
+    const result = await fetch(`${url}/v1/products`).then(res => res.json());
+    console.log("result", result);
+    setProductList(result);
+  };
+
+  const deleteAllProducts = async () => {
+    const url = window.location.origin;
+    // const url = "http://localhost:3000";
+    const result = await fetch(`${url}/v1/products`, {
+      method: "DELETE"
+    }).then(res => res.json());
+    setProductList([]);
+  };
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const postData: any = {
@@ -28,7 +45,9 @@ const App: React.FC = () => {
       type: (event.target as any).type.value,
       item: (event.target as any).item.value
     };
-    const result = await fetch("http://localhost:3000/v1/products", {
+    const url = window.location.origin;
+    // const url = "http://localhost:3000";
+    const result = await fetch(`${url}/v1/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -115,9 +134,56 @@ const App: React.FC = () => {
           </Input>
         </FormGroup>
         <FormGroup>
-          <Button>Submit</Button>
+          <Button className="buttonStyle">Submit</Button>
         </FormGroup>
       </Form>
+      <Button className="buttonStyle" onClick={updatedProductList}>
+        Refresh Products
+      </Button>
+      <Button className="buttonStyle" onClick={deleteAllProducts}>
+        Delete Products
+      </Button>
+
+      <Table>
+        <thead>
+          {productList.length > 0 ? (
+            <tr>
+              <th>Name</th>
+              <th>Brand</th>
+              <th>Category Path</th>
+              <th>Discount</th>
+              <th>Image Url</th>
+              <th>MOQ</th>
+              <th>MRP</th>
+              <th>Price</th>
+              <th>Product Url</th>
+              <th>Quantity</th>
+            </tr>
+          ) : (
+            <></>
+          )}
+        </thead>
+        <tbody>
+          {productList.map((product: any, key) => (
+            <tr key={key}>
+              <td>{product.name}</td>
+              <td>{product.brand}</td>
+              <td>{product.categoryPath}</td>
+              <td>{product.discount}%</td>
+              <td>
+                <a href={product.imageUrl}>{product.imageUrl}</a>
+              </td>
+              <td>{product.moq}</td>
+              <td>{product.mrp}</td>
+              <td>{product.price}</td>
+              <td>
+                <a href={product.productUrl}>{product.productUrl}</a>
+              </td>
+              <td>{product.quantity}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </>
   );
 };

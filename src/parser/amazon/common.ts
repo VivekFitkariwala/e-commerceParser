@@ -30,7 +30,7 @@ export default (htmlString: string): Omit<IProduct, "productUrl"> => {
 
   // product price
   const price = parseInt(
-    $("#priceblock_dealprice")
+    $("#priceblock_ourprice")
       .text()
       .split("₹")
       .join("")
@@ -53,7 +53,7 @@ export default (htmlString: string): Omit<IProduct, "productUrl"> => {
 
   // discount
   const discountText = $(
-    "#dealprice_savings td.priceBlockSavingsString"
+    "#regularprice_savings td.priceBlockSavingsString"
   ).text();
   const discountArray = discountText.split("(");
   const discount = parseInt(

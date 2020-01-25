@@ -5,19 +5,10 @@ const product: Router = Router();
 const controller = new Controller();
 
 // Get all products
-
-// Retrieve all Users
-// user.get("/", controller.findAll);
-
-// Retrieve a Specific User
-// user.get("/:id", controller.findOne);
-
-// Update a User with Id
-// user.put("/:id", controller.update);
-
-// Delete a User with Id
-// user.delete("/:id", controller.remove);
+product.get("/", controller.getAll);
 
 product.post("/", controller.parse);
+
+product.delete("/", controller.deleteAll);
 
 export default product;
